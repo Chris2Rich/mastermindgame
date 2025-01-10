@@ -1,20 +1,19 @@
-const gamestate: Array<number> = [...Array(40)]
-gamestate[3] = 1
-gamestate[10] = 5
+"use client"
+let map: Record<number, string> = {0: "transparent", 1: "red", 2: "yellow", 3: "lime", 4: "cyan", 5: "magenta"}
 
-
-const map: Record<number, string> = {0: "transparent", 1: "red", 2: "yellow", 3: "lime", 4: "cyan", 5: "magenta"}
-
-const Grid: React.FC = () => {
+const Grid: React.FC = ({gamestate} : any) => {
+  const get_clickable = (index: number) : boolean =>{return (Math.floor(index / 4) == gamestate.splice(-1)[0] && gamestate[index] != 0)}
   return (
     <div className="flex justify-center items-center w-full h-full">
       <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5 rounded">
-        {[...Array(40)].map((_, index) => (
+        {[...Array(40)].map((_,index) => (
           <div 
-            key={index} 
-            className="w-16 h-16 border-2 border-slate-600" 
-            style={{ backgroundColor: map[gamestate[index]] || 'transparent' }}
-          />
+          key={index}
+            className="w-16 h-16 border-2 border-slate-600 text-center" 
+            style={{ backgroundColor: map[gamestate[index]], cursor: (():string|undefined => {if(get_clickable(index)){return "pointer"} else{return undefined}})()}}
+
+            onClick={()=>{gamestate[index]++}}
+          ><p className="text-3xl">{index % 4}</p></div>
         ))}
       </div>
     </div>
@@ -23,8 +22,8 @@ const Grid: React.FC = () => {
 
 const ColorPicker: React.FC = () => {
   return (
-    <div className="flex justify-center items-center w-full h-full">
-      <div className="grid grid-cols-1 gap-0.5 bg-slate-700 p-0.5 rounded">
+    <div className="flex justify-center items-center w-full h-full mt-8">
+      <div className="grid grid-cols-5 gap-0.5 bg-slate-700 p-0.5 rounded">
         {[1,2,3,4,5].map((index) => (
           <div 
             key={index} 
@@ -38,6 +37,10 @@ const ColorPicker: React.FC = () => {
 };
 
 export default function Home() {
+  let gamestate: Array<number> = [...Array(40)].concat([0])
+  gamestate[3] = 1
+  gamestate[10] = 5
+  gamestate[21] = 4
   return (
     <div className="min-h-screen w-full bg-gray-900 relative">
       <div 
@@ -53,8 +56,9 @@ export default function Home() {
           opacity: 0.2,
         }}
       />
+      <p className="relative z-10 p-8 text-3xl text-slate-100">MASTERMIND</p>
       <div className="relative z-10 p-8">
-        <Grid />
+        <Grid gamestate={gamestate}/>
         <ColorPicker />
       </div>
     </div>
