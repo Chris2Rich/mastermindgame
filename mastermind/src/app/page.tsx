@@ -1,46 +1,65 @@
 "use client"
 let map: Record<number, string> = {0: "transparent", 1: "red", 2: "yellow", 3: "lime", 4: "cyan", 5: "magenta"}
 
-const Grid: React.FC = ({gamestate} : any) => {
-  const get_clickable = (index: number) : boolean =>{return (Math.floor(index / 4) == gamestate.splice(-1)[0] && gamestate[index] != 0)}
-  return (
-    <div className="flex justify-center items-center w-full h-full">
-      <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5 rounded">
-        {[...Array(40)].map((_,index) => (
+const Row: React.FC = ({index, turn}: any) => {
+  if (index == turn) {
+    return (
+      <div className="flex-rows gap-1">
+      <div className="grid grid-cols-5 gap-0.5 bg-slate-700 p-0.5">
+        {[...Array(4)].map((_,index) => (
           <div 
           key={index}
-            className="w-16 h-16 border-2 border-slate-600 text-center" 
-            style={{ backgroundColor: map[gamestate[index]], cursor: (():string|undefined => {if(get_clickable(index)){return "pointer"} else{return undefined}})()}}
-
-            onClick={()=>{gamestate[index]++}}
+            className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg" 
           ><p className="text-3xl">{index % 4}</p></div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const ColorPicker: React.FC = () => {
-  return (
-    <div className="flex justify-center items-center w-full h-full mt-8">
-      <div className="grid grid-cols-5 gap-0.5 bg-slate-700 p-0.5 rounded">
-        {[1,2,3,4,5].map((index) => (
+        )) 
+        }
+        </div>
+        <button className="rounded bg-green-500">Check</button>
+        </div>
+        )
+  }
+  if (index <= turn) {
+    return (
+      <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5">
+        {[...Array(4)].map((_,index) => (
           <div 
-            key={index} 
-            className="w-16 h-16 border-2 border-slate-600 hover:cursor-pointer" 
-            style={{ backgroundColor: map[index] || 'transparent' }}
-          />
+          key={index}
+            className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg" 
+          ><p className="text-3xl">{index % 4}</p></div>
+        )) 
+        }
+        </div>
+        )
+  }
+  return (
+  <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5 opacity-20">
+    {[...Array(4)].map((_,index) => (
+      <div 
+      key={index}
+        className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg" 
+      ></div>
+    )) 
+    }
+    </div>
+    )
+}
+
+const Grid: React.FC = ({gamestate, turn} : any) => {
+  return (
+    <div className="flex justify-center items-center w-full h-full">
+      <div className="flex-cols p-0.5 rounded">
+        {gamestate.map((_, index : number) => (
+          <Row index={index} turn={turn}/>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default function Home() {
-  let gamestate: Array<number> = [...Array(40)].concat([0])
-  gamestate[3] = 1
-  gamestate[10] = 5
-  gamestate[21] = 4
+  let gamestate: Array<Array<number>> = [[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)]]
+  let turn: number = 2
+  let code: Array<number> = [0,0,0,0]
   return (
     <div className="min-h-screen w-full bg-gray-900 relative">
       <div 
@@ -58,9 +77,8 @@ export default function Home() {
       />
       <p className="relative z-10 p-8 text-3xl text-slate-100">MASTERMIND</p>
       <div className="relative z-10 p-8">
-        <Grid gamestate={gamestate}/>
-        <ColorPicker />
+        <Grid gamestate={gamestate} turn={turn}/>
       </div>
     </div>
-  );
+  )
 }
