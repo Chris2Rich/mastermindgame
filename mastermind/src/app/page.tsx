@@ -16,12 +16,12 @@ const Row: React.FC = ({index, turn, gamestate, code}: any) => {
     return (
       <div className="flex flex-col">
       <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5">
-        {[...Array(4)].map((_,jndex) => (
+        {[0,1,2,3].map((jndex) => (
           <div 
           key={jndex}
           className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg hover:cursor-pointer"
           style={{ backgroundColor: map[gamestate[index][jndex]] || "transparent"}}
-          onClick={(jndex:any)=>{gamestate[index][jndex] = (gamestate[index][jndex] + 1) % 6; console.log(gamestate); return null}}
+          onClick={(jndex:any)=>{gamestate[index][jndex] = (gamestate[index][jndex] + 1) % 6;console.log(jndex);}}
           />
         ))
       }
@@ -76,7 +76,7 @@ const Grid: React.FC = ({gamestate, turn, code} : any) => {
 }
 
 export default function Home() {
-  let gamestate: Array<Array<number>> = [[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)],[...Array(4)]]
+  let gamestate: Array<Array<number>> = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
   let turn: number = 2
   let code: Array<number> = [0,0,0,0]
   return (
