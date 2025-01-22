@@ -1,31 +1,49 @@
 "use client"
 let map: Record<number, string> = {0: "transparent", 1: "red", 2: "yellow", 3: "lime", 4: "cyan", 5: "magenta"}
 
-const Row: React.FC = ({index, turn}: any) => {
+const check_box: any = (selected: any, code: any, index: any) => {
+  if(selected == code[index]){
+    return "green"
+  }
+  if(code.includes(selected)){
+    return "yellow"
+  }
+  return "gray"
+}
+
+const Row: React.FC = ({index, turn, gamestate, code}: any) => {
   if (index == turn) {
     return (
-      <div className="flex-rows gap-1">
-      <div className="grid grid-cols-5 gap-0.5 bg-slate-700 p-0.5">
-        {[...Array(4)].map((_,index) => (
+      <div className="flex flex-col">
+      <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5">
+        {[...Array(4)].map((_,jndex) => (
           <div 
-          key={index}
-            className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg" 
-          ><p className="text-3xl">{index % 4}</p></div>
-        )) 
-        }
+          key={jndex}
+          className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg hover:cursor-pointer"
+          style={{ backgroundColor: map[gamestate[index][jndex]] || "transparent"}}
+          onClick={(jndex:any)=>{gamestate[index][jndex] = (gamestate[index][jndex] + 1) % 6; console.log(gamestate); return null}}
+          />
+        ))
+      }
         </div>
         <button className="rounded bg-green-500">Check</button>
-        </div>
+      </div>
         )
   }
   if (index <= turn) {
     return (
       <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5">
-        {[...Array(4)].map((_,index) => (
+        {[...Array(4)].map((_,jndex) => (
           <div 
-          key={index}
+          key={jndex}
             className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg" 
-          ><p className="text-3xl">{index % 4}</p></div>
+            style={{ backgroundColor: map[gamestate[index][jndex]] || 'transparent' }}
+          >
+            <div 
+            className="rounded-full border-slate-700"
+            style={{ backgroundColor: check_box(gamestate[index][jndex], code, jndex) || 'transparent' }}
+            />
+          </div>
         )) 
         }
         </div>
@@ -33,10 +51,11 @@ const Row: React.FC = ({index, turn}: any) => {
   }
   return (
   <div className="grid grid-cols-4 gap-0.5 bg-slate-700 p-0.5 opacity-20">
-    {[...Array(4)].map((_,index) => (
+    {[...Array(4)].map((_,jndex) => (
       <div 
-      key={index}
-        className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg" 
+      key={jndex}
+        className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg"
+        style={{ backgroundColor: map[gamestate[index][jndex]] || 'transparent' }}
       ></div>
     )) 
     }
@@ -44,12 +63,12 @@ const Row: React.FC = ({index, turn}: any) => {
     )
 }
 
-const Grid: React.FC = ({gamestate, turn} : any) => {
+const Grid: React.FC = ({gamestate, turn, code} : any) => {
   return (
     <div className="flex justify-center items-center w-full h-full">
       <div className="flex-cols p-0.5 rounded">
         {gamestate.map((_, index : number) => (
-          <Row index={index} turn={turn}/>
+          <Row key={index} index={index} turn={turn} gamestate={gamestate} code={code}/>
         ))}
       </div>
     </div>
@@ -77,7 +96,7 @@ export default function Home() {
       />
       <p className="relative z-10 p-8 text-3xl text-slate-100">MASTERMIND</p>
       <div className="relative z-10 p-8">
-        <Grid gamestate={gamestate} turn={turn}/>
+        <Grid gamestate={gamestate} turn={turn} code={code}/>
       </div>
     </div>
   )
