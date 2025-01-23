@@ -3,6 +3,7 @@ let map: Record<number, string> = {0: "transparent", 1: "red", 2: "yellow", 3: "
 
 const check_box: any = (selected: any, code: any, index: any) => {
   if(selected == code[index]){
+    console.log("correct")
     return "green"
   }
   if(code.includes(selected)){
@@ -10,6 +11,8 @@ const check_box: any = (selected: any, code: any, index: any) => {
   }
   return "gray"
 }
+
+const check = () => {}
 
 const Row: React.FC = ({index, turn, gamestate, code}: any) => {
   if (index == turn) {
@@ -20,13 +23,13 @@ const Row: React.FC = ({index, turn, gamestate, code}: any) => {
           <div 
           key={jndex}
           className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg hover:cursor-pointer"
-          style={{ backgroundColor: map[gamestate[index][jndex]] || "transparent"}}
-          onClick={(jndex:any)=>{gamestate[index][jndex] = (gamestate[index][jndex] + 1) % 6;console.log(jndex);}}
+          style={{ backgroundColor: map[gamestate[index][jndex]]}}
+          onClick={()=>{const temp = gamestate[index][jndex] = (gamestate[index][jndex] + 1) % 6}}
           />
         ))
       }
         </div>
-        <button className="rounded bg-green-500">Check</button>
+        <button className="rounded bg-green-500" onClick={check}>Check</button>
       </div>
         )
   }
@@ -37,11 +40,11 @@ const Row: React.FC = ({index, turn, gamestate, code}: any) => {
           <div 
           key={jndex}
             className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg" 
-            style={{ backgroundColor: map[gamestate[index][jndex]] || 'transparent' }}
+            style={{ backgroundColor: map[gamestate[index][jndex]]}}
           >
             <div 
             className="rounded-full border-slate-700"
-            style={{ backgroundColor: check_box(gamestate[index][jndex], code, jndex) || 'transparent' }}
+            style={{ backgroundColor: check_box(gamestate[index][jndex], code, jndex)}}
             />
           </div>
         )) 
@@ -55,7 +58,7 @@ const Row: React.FC = ({index, turn, gamestate, code}: any) => {
       <div 
       key={jndex}
         className="w-16 h-16 border-2 border-slate-600 text-center rounded-lg"
-        style={{ backgroundColor: map[gamestate[index][jndex]] || 'transparent' }}
+        style={{ backgroundColor: map[gamestate[index][jndex]]}}
       ></div>
     )) 
     }
@@ -78,7 +81,7 @@ const Grid: React.FC = ({gamestate, turn, code} : any) => {
 export default function Home() {
   let gamestate: Array<Array<number>> = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
   let turn: number = 2
-  let code: Array<number> = [0,0,0,0]
+  let code: Array<number> = [2,3,0,1]
   return (
     <div className="min-h-screen w-full bg-gray-900 relative">
       <div 
