@@ -22,7 +22,7 @@ export default function Home() {
       const newGamestate = [...prev]
       newGamestate[rowIndex] = [...newGamestate[rowIndex]]
       newGamestate[rowIndex][cellIndex] =
-        (newGamestate[rowIndex][cellIndex] + 1) % 5
+        (newGamestate[rowIndex][cellIndex] + 1) % 7
       return newGamestate
     })
   }
