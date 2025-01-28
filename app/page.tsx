@@ -2,7 +2,7 @@
 "use client"
 import { useState } from "react"
 
-const code: Array<number> = [(Math.floor(Math.random() * 4) + 1), (Math.floor(Math.random() * 4) + 1), (Math.floor(Math.random() * 4) + 1), (Math.floor(Math.random() * 4) + 1)]
+const code: Array<number> = [(Math.floor(Math.random() * 6) + 1), (Math.floor(Math.random() * 6) + 1), (Math.floor(Math.random() * 6) + 1), (Math.floor(Math.random() * 6) + 1)]
 export default function Home() {
   const [gamestate, setGamestate] = useState<Array<Array<number>>>([
     [0, 0, 0, 0],
@@ -108,6 +108,8 @@ const Row: React.FC<any> = ({ index, turn, gamestate, code, onUpdate, ut, res }:
     2: "hsl(60, 100%, 60%)",
     3: "hsl(120, 100%, 60%)",
     4: "hsl(180, 100%, 60%)",
+    5: "hsl(240, 100%, 60%)",
+    6: "hsl(300, 100%, 60%)",
   }
 
   const check_box: any = (selected: any, code: any, index: any) => {
